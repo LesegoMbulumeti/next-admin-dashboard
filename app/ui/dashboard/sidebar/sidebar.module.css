@@ -36,7 +36,7 @@
 }
 .list a {
     text-decoration: none; /* Remove underline */
-    color: white; /* Set default color for links */
+    color: black; /* Set default color for links */
 }
 
 .cat{
@@ -56,10 +56,10 @@
     border-radius: 10px;
     background: none;
     border: none;
-    color: white;
+    color: black;
     width: 100%;
 }
 
 .logout:hover{
-    background-color: #2e374a;
+    background-color: #D9EAFD;
 }
