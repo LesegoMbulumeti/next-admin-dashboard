@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nextadmindashboard-dev-05233-authRole",
+      "UnauthRoleArn": "arn:aws:iam::637423175506:role/amplify-nextadmindashboard-dev-05233-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::637423175506:role/amplify-nextadmindashboard-dev-05233-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-nextadmindashboard-dev-05233-deployment",
+      "UnauthRoleName": "amplify-nextadmindashboard-dev-05233-unauthRole",
+      "StackName": "amplify-nextadmindashboard-dev-05233",
+      "StackId": "arn:aws:cloudformation:us-east-1:637423175506:stack/amplify-nextadmindashboard-dev-05233/3d043090-20f0-11f0-b96c-12688cdfa807",
+      "AmplifyAppId": "dmyxx06k0wnjy"
+    },
+    "categories": {
+      "api": {
+        "nextadmindashboard": {}
+      }
+    }
+  }
+}

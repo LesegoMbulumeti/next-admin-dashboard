@@ -1,0 +1,14 @@
+type User @model @auth(rules: [{allow: public}]) {
+  username: String! @primaryKey
+  email: String
+  fullName: String
+  createdAt: AWSDateTime
+}
+
+type Product @model @auth(rules: [{allow: public}]) {
+  title: String! @primaryKey
+  description: String
+  price: Float
+  stock: Int
+  createdAt: AWSDateTime
+}

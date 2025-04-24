@@ -1,8 +1,9 @@
+"use client";
 import { MdAnalytics, MdAttachMoney, MdDashboard, MdHelpCenter, MdLogout, MdOutlineSettings, MdPeople, MdShoppingBag, MdSupervisedUserCircle, MdWork } from "react-icons/md";
 import styles from "./sidebar.module.css";
-import MenuLink from "././menuLink/menulink";
+import MenuLink from "./menuLink/menulink";
 import Image from "next/image";
-
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
 const menuItems = [
     {
@@ -71,6 +72,7 @@ const menuItems = [
 ];
 
 const Sidebar = () => {
+    const { user, signOut } = useAuthenticator((context) => [context.user]);
     return (
         <div className={styles.container}>
             <div className={styles.user}>
@@ -91,12 +93,14 @@ const Sidebar = () => {
                ))}
              </li>
             ))}
-            </ul> 
-            <button className={styles.logout}>
+            </ul>
+             
+            <button className={styles.logout} onClick={() => signOut?.()}>
                 <MdLogout/>
                 Logout
-
+                
             </button>
+            
         </div>
     );
     }
