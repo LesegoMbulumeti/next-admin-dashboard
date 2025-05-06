@@ -5,7 +5,7 @@ import "./globals.css";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { Amplify } from "aws-amplify";
-import outputs from "../amplify_outputs.json"; // Adjust path if needed
+import outputs from "../amplify_outputs.json";
 import "./ui/globals.css";
 const inter = Inter({ subsets: ["latin"] });
 

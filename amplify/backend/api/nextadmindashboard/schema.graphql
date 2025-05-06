@@ -1,14 +1,25 @@
-type User @model @auth(rules: [{allow: public}]) {
-  username: String! @primaryKey
-  email: String
-  fullName: String
+type User @model @auth(rules: [{ allow: public }]) {
+  user_id: ID! @primaryKey              
+  username: String!           
+  email: String!
+  password: String!
+  img: String
+  isAdmin: Boolean
+  isActive: Boolean
+  phone: String
+  address: String
   createdAt: AWSDateTime
 }
 
-type Product @model @auth(rules: [{allow: public}]) {
-  title: String! @primaryKey
-  description: String
-  price: Float
-  stock: Int
+type Product @model @auth(rules: [{ allow: public }]) {
+  prod_id: ID! @primaryKey          
+  title: String!             
+  desc: String!               
+  price: Float!
+  stock: Int!
+  category: String!          
+  img: String
+  color: String
+  size: String
   createdAt: AWSDateTime
 }

@@ -1,68 +1,103 @@
 "use client";
 import { useState } from "react";
 import styles from "@/app/ui/dashboard/addProduct/addProduct.module.css";
+import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddProductPage = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
-    cat: "",
+    category_id: "",
     price: "",
     stock: "",
     color: "",
     size: "",
-    desc: "",
+    description: "",
+    img: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]:
+        name === "price" || name === "stock" || name === "category_id"
+          ? Number(value)
+          : value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
 
     try {
-      const res = await fetch("http://localhost:8000/products", {
+      // Convert numeric fields
+      const numericData = {
+        ...formData,
+        price: parseFloat(formData.price),
+        stock: parseInt(formData.stock),
+        category_id: parseInt(formData.category_id),
+      };
+
+      const response = await fetch("http://localhost:8000/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          title: formData.title,
-          category: formData.cat,
-          price: parseFloat(formData.price),
-          stock: parseInt(formData.stock),
-          color: formData.color,
-          size: formData.size,
-          desc: formData.desc,
-        }),
+        body: JSON.stringify(numericData),
       });
 
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.detail || "Failed to add product.");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.detail ||
+            errorData.message ||
+            `Failed to add product (status ${response.status})`
+        );
       }
 
-      alert("Product added successfully!");
+      // Show success toast
+      toast.success("Product added successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        onClose: () => router.push("/dashboard/products"),
+      });
+
+      // Reset form
       setFormData({
         title: "",
-        cat: "",
+        category_id: "",
         price: "",
         stock: "",
         color: "",
         size: "",
-        desc: "",
+        description: "",
+        img: "",
       });
     } catch (error: any) {
-      alert(`Error: ${error.message}`);
+      console.error("Error adding product:", error);
+      setError(error.message);
+      toast.error(error.message || "Failed to add product");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className={styles.container}>
+      <ToastContainer />
+      {error && <div className={styles.error}>{error}</div>}
       <form className={styles.form} onSubmit={handleSubmit}>
         <input
           type="text"
@@ -72,31 +107,41 @@ const AddProductPage = () => {
           onChange={handleChange}
           required
         />
-        <select name="cat" value={formData.cat} onChange={handleChange} required>
+        <select
+          name="category_id"
+          value={formData.category_id}
+          onChange={handleChange}
+        >
           <option value="">Choose a Category</option>
-          <option value="kitchen">Kitchen</option>
-          <option value="phone">Phone</option>
-          <option value="computer">Computer</option>
+          <option value="1">Electronics</option>
+          <option value="2">Clothing</option>
+          <option value="3">Home</option>
+          <option value="4">Other</option>
         </select>
         <input
-          type="text"
-          inputMode="numeric"
-          pattern="[0-9]*"
+          type="number"
           placeholder="Price"
           name="price"
           value={formData.price}
           onChange={handleChange}
+          min="0"
+          step="0.01"
           required
         />
         <input
-          type="text"
-          inputMode="numeric"
-          pattern="[0-9]*"
+          type="number"
           placeholder="Stock"
           name="stock"
           value={formData.stock}
           onChange={handleChange}
+          min="0"
           required
+        />
+        <input
+          type="text"
+          placeholder="Image URL"
+          name="img"
+          onChange={handleChange}
         />
         <input
           type="text"
@@ -113,13 +158,30 @@ const AddProductPage = () => {
           onChange={handleChange}
         />
         <textarea
-          name="desc"
+          name="description"
           placeholder="Description"
-          value={formData.desc}
+          value={formData.description}
           onChange={handleChange}
           rows={6}
-        ></textarea>
-        <button type="submit">Submit</button>
+          required
+        />
+        <div className={styles.buttonContainer}>
+          <button
+            type="button"
+            onClick={() => router.push("/dashboard/products")}
+            className={styles.cancelButton}
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={styles.submitButton}
+          >
+            {isSubmitting ? "Adding..." : "Add Product"}
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -5,6 +5,20 @@
   margin-top: 20px;
 }
 
+.error {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: #ff3333;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #ff3333;
+}
+
+.error p {
+  margin: 0;
+  font-size: 14px;
+}
+
 .form {
   display: flex;
   flex-wrap: wrap;
