@@ -2,14 +2,14 @@
 
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Authenticator } from "@aws-amplify/ui-react";
-import "@aws-amplify/ui-react/styles.css";
 import { Amplify } from "aws-amplify";
-import outputs from "../amplify_outputs.json";
+import { configureAmplify } from "./utils/auth";
 import "./ui/globals.css";
+
 const inter = Inter({ subsets: ["latin"] });
 
-Amplify.configure(outputs);
+// Configure Amplify with our custom configuration
+configureAmplify();
 
 export default function RootLayout({
   children,
@@ -19,11 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-          <Authenticator.Provider>
-            <Authenticator>
-              {({ signOut, user }) => <>{children}</>}
-            </Authenticator>
-          </Authenticator.Provider>
+        {children}
       </body>
     </html>
   );

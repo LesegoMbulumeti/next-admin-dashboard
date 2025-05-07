@@ -3,7 +3,9 @@ import { MdAnalytics, MdAttachMoney, MdDashboard, MdHelpCenter, MdLogout, MdOutl
 import styles from "./sidebar.module.css";
 import MenuLink from "./menuLink/menulink";
 import Image from "next/image";
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import { signOut } from 'aws-amplify/auth';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const menuItems = [
     {
@@ -72,7 +74,21 @@ const menuItems = [
 ];
 
 const Sidebar = () => {
-    const { user, signOut } = useAuthenticator((context) => [context.user]);
+    const [isSigningOut, setIsSigningOut] = useState(false);
+    const router = useRouter();
+
+    const handleSignOut = async () => {
+        try {
+            setIsSigningOut(true);
+            await signOut();
+            router.push('/login');
+        } catch (error) {
+            console.error('Error signing out:', error);
+        } finally {
+            setIsSigningOut(false);
+        }
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.user}>
@@ -95,10 +111,13 @@ const Sidebar = () => {
             ))}
             </ul>
              
-            <button className={styles.logout} onClick={() => signOut?.()}>
+            <button 
+                className={styles.logout} 
+                onClick={handleSignOut}
+                disabled={isSigningOut}
+            >
                 <MdLogout/>
-                Logout
-                
+                {isSigningOut ? 'Signing out...' : 'Logout'}
             </button>
             
         </div>
