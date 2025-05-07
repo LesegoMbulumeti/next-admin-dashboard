@@ -1,26 +1,18 @@
 import styles from '../ui/dashboard/dashboard.module.css';
-import Card from '../ui/dashboard/card/card';
+import Cards from '../ui/dashboard/cards/cards';
 import Transaction from '../ui/dashboard/transactions/transaction';
 import Chart from '../ui/dashboard/chart/chart';
-//import Rightbar from '../ui/dashboard/rightbar/rightbar';
 
-const dashboard = () => {
+const Dashboard = () => {
     return (
     <div className={styles.wrapper}>
         <div className={styles.main}>
-        <div className={styles.cards}>
-            <Card/>
-            <Card/>
-            <Card/>
-            </div>
+            <Cards />
             <Transaction/>
             <Chart/>
         </div>
-       
     </div>
     )
-
-
 }
 
-export default dashboard;
+export default Dashboard;
